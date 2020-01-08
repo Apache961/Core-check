@@ -3,58 +3,7 @@
 
 # 简介
 自定义注解校验，简称“系统注解校验”，是一款通过AOP切面实现的Controller层参数校验。设计的来由是因为我们系统中校验逻辑混乱，校验代码比较繁重，为解决项目代码在各个版本中的灵活使用应运而生的。
-# 前提
-该工具以jar形式存在，并交由Nexus私服管理，所以无论是本地还是服务器都应该配置私服，以下是Nexus私服配置信息：
-```xml
-<profiles>
-	<!-- 私服 -->
-	<profile>
-		<id>syrg</id>
-		<repositories>
-			<repository>
-				<id>nexus-syrg</id>
-				<name>Nexus syrg</name>
-				<url>http://192.168.1.151:8222/nexus/content/groups/public</url>
-				<releases>
-                    <enabled>true</enabled>
-					<updatePolicy>always</updatePolicy>
-                </releases>
-                <snapshots>
-                    <enabled>true</enabled>
-					<updatePolicy>always</updatePolicy>
-                </snapshots>
-			</repository>
-		</repositories>
-		<pluginRepositories>
-			<pluginRepository>
-				<id>nexus-syrg</id>
-				<name>Nexus syrg</name>
-				<url>http://192.168.1.151:8222/nexus/content/groups/public</url>
-				<releases>
-					<enabled>true</enabled>
-					<updatePolicy>always</updatePolicy>
-				</releases>
-				<snapshots>
-					<enabled>true</enabled>
-					<updatePolicy>always</updatePolicy>
-				</snapshots>
-			</pluginRepository>
-		</pluginRepositories>
-	</profile>
-</profiles>
-<activeProfiles>
-	<activeProfile>syrg</activeProfile>
-</activeProfiles>
-```
-以上信息应该配置在“maven根目录/conf/settings.xml”的相应位置。
-“系统注解校验”maven坐标如下：
-```xml
-<dependency>
-    <groupId>cn.99xf</groupId>
-    <artifactId>Core-check</artifactId>
-    <version>2.0-SNAPSHOT</version>
-</dependency>
-```
+
 # 注解说明
 “系统注解校验”工具一共涉及到三类注解，如下：
 第一类：参数注解@EnableCheck
