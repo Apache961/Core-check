@@ -149,7 +149,7 @@ public class Validator {
                 declaredField.setAccessible(true);
                 CheckField checkFieldAnno = declaredField.getAnnotation(CheckField.class);
                 if (checkFieldAnno == null) {
-                    return;
+                    break;
                 }
                 int sort = (index == -1) ? Integer.MAX_VALUE : checkFieldAnno.sort();
                 Class<?> fieldClazz = declaredField.getType();
