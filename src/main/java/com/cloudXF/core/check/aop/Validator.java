@@ -149,7 +149,7 @@ public class Validator {
                 declaredField.setAccessible(true);
                 CheckField checkFieldAnno = declaredField.getAnnotation(CheckField.class);
                 if (checkFieldAnno == null) {
-                    break;
+                    continue;
                 }
                 int sort = (index == -1) ? Integer.MAX_VALUE : checkFieldAnno.sort();
                 Class<?> fieldClazz = declaredField.getType();
@@ -890,7 +890,7 @@ public class Validator {
      */
     private boolean effectGroup(String[] effectGroup, String[] groups) {
         boolean flag = false;
-        if (effectGroup == null || effectGroup.length == 0) {
+        if (effectGroup == null || effectGroup.length == 0 || groups == null || groups.length == 0) {
             flag = true;
         } else {
             for (String effect : effectGroup) {
