@@ -49,61 +49,63 @@ public class Validator {
         MethodSignature msig = (MethodSignature) pjp.getSignature();
         Method method = target.getClass().getMethod(msig.getName(), msig.getParameterTypes());
         Annotation[][] parameterAnnotations = method.getParameterAnnotations();
-        Annotation[] parameterAnnotation = parameterAnnotations[0];
         try {
             // 遍历该方法的所有参数
-            if (args != null && args.length == 1 && parameterAnnotation != null && parameterAnnotation.length > 0) {
+            if (args != null && args.length == 1) {
                 for (Object arg : args) {
                     // 获取参数类型
                     Class<?> argClazz = arg.getClass();
-                    List<Annotation> annotations = Arrays.asList(parameterAnnotation);
-                    EnableCheck enableCheckAnno = null;
-                    for (Annotation annotation : annotations) {
-                        if (annotation.annotationType().equals(EnableCheck.class)) {
-                            enableCheckAnno = (EnableCheck) annotation;
+                    Annotation[] parameterAnnotation = parameterAnnotations[0];
+                    if (parameterAnnotation != null && parameterAnnotation.length > 0) {
+                        List<Annotation> annotations = Arrays.asList(parameterAnnotation);
+                        EnableCheck enableCheckAnno = null;
+                        for (Annotation annotation : annotations) {
+                            if (annotation.annotationType().equals(EnableCheck.class)) {
+                                enableCheckAnno = (EnableCheck) annotation;
+                            }
                         }
-                    }
-                    if (enableCheckAnno != null) {
-                        String[] effectGroup = enableCheckAnno.effectGroup();
-                        // 获取参数所有属性
-                        List<Param> paramList = new ArrayList<Param>();
-                        try {
-                            getAllFileds(paramList, argClazz, arg, 0);
-                        } catch (Exception e) {
-                            throw new RuntimeException("注解校验获取属性失败！！");
-                        }
+                        if (enableCheckAnno != null) {
+                            String[] effectGroup = enableCheckAnno.effectGroup();
+                            // 获取参数所有属性
+                            List<Param> paramList = new ArrayList<Param>();
+                            try {
+                                getAllFileds(paramList, argClazz, arg, 0);
+                            } catch (Exception e) {
+                                throw new RuntimeException("注解校验获取属性失败！！");
+                            }
 
-                        if (paramList != null && paramList.size() > 0) {
-                            // 校验顺序排序
-                            Collections.sort(paramList, new Comparator<Param>() {
-                                @Override
-                                public int compare(Param o1, Param o2) {
-                                    if (o1.getSort() > o2.getSort()) {
-                                        return 1;
-                                    } else if (o1.getSort() == o2.getSort()) {
-                                        return 0;
-                                    } else {
-                                        return -1;
+                            if (paramList != null && paramList.size() > 0) {
+                                // 校验顺序排序
+                                Collections.sort(paramList, new Comparator<Param>() {
+                                    @Override
+                                    public int compare(Param o1, Param o2) {
+                                        if (o1.getSort() > o2.getSort()) {
+                                            return 1;
+                                        } else if (o1.getSort() == o2.getSort()) {
+                                            return 0;
+                                        } else {
+                                            return -1;
+                                        }
                                     }
+                                });
+                                // 遍历所有属性,并找出有注解的
+                                for (Param param : paramList) {
+                                    // 获取类名
+                                    String className = param.getClassName();
+                                    // 获取属性
+                                    Field field = param.getField();
+                                    // 获取属性值
+                                    Object fieldObj = param.getValue();
+                                    // 获取属性名称
+                                    String fieldName = field.getName();
+                                    // 获取属性类型
+                                    Class<?> fieldType = field.getType();
+                                    // 检查每个属性的注解,有注解的才处理
+                                    Annotation[] fieldAnns = field.getAnnotations();
+                                    // 校验属性使用注解的正确性
+                                    checkAnnotationForType(className, fieldName, fieldType, fieldAnns);
+                                    doCheck(param, effectGroup);
                                 }
-                            });
-                            // 遍历所有属性,并找出有注解的
-                            for (Param param : paramList) {
-                                // 获取类名
-                                String className = param.getClassName();
-                                // 获取属性
-                                Field field = param.getField();
-                                // 获取属性值
-                                Object fieldObj = param.getValue();
-                                // 获取属性名称
-                                String fieldName = field.getName();
-                                // 获取属性类型
-                                Class<?> fieldType = field.getType();
-                                // 检查每个属性的注解,有注解的才处理
-                                Annotation[] fieldAnns = field.getAnnotations();
-                                // 校验属性使用注解的正确性
-                                checkAnnotationForType(className, fieldName, fieldType, fieldAnns);
-                                doCheck(param, effectGroup);
                             }
                         }
                     }
