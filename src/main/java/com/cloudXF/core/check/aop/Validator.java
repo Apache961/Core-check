@@ -49,12 +49,9 @@ public class Validator {
         MethodSignature msig = (MethodSignature) pjp.getSignature();
         Method method = target.getClass().getMethod(msig.getName(), msig.getParameterTypes());
         Annotation[][] parameterAnnotations = method.getParameterAnnotations();
-        if (parameterAnnotations == null || parameterAnnotations.length > 1) {
-            throw new RuntimeException("注解校验只能校验单参数接口！！");
-        }
         try {
             // 遍历该方法的所有参数
-            if (args != null && args.length > 0) {
+            if (args != null && args.length == 1) {
                 for (Object arg : args) {
                     // 获取参数类型
                     Class<?> argClazz = arg.getClass();
