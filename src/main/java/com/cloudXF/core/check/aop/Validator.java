@@ -243,12 +243,13 @@ public class Validator {
                     for (Annotation fieldAnn : fieldAnns) {
                         Class<? extends Annotation> annClazz = fieldAnn.annotationType();
                         if (!annClazz.equals(CheckField.class)) {
-                            if (!annClazz.equals(CheckDigits.class)
-                                    && !annClazz.equals(CheckEnum.class)
-                                    && !annClazz.equals(CheckMax.class)
-                                    && !annClazz.equals(CheckMin.class)
-                                    && !annClazz.equals(CheckNotNull.class)
-                                    && !annClazz.equals(CheckNull.class)) {
+                            if (annClazz.equals(CheckAssertFalse.class)
+                                    || annClazz.equals(CheckAssertTrue.class)
+                                    || annClazz.equals(CheckLength.class)
+                                    || annClazz.equals(CheckNotBlank.class)
+                                    || annClazz.equals(CheckNotEmpty.class)
+                                    || annClazz.equals(CheckPattern.class)
+                                    || annClazz.equals(CheckSqlUniqe.class)) {
                                 throw new IllegalArgumentException("类名：[" + className + "], 属性：[" + fieldName + "]不能使用[" + fieldAnn.annotationType().getSimpleName() + "]注解!只可使用" +
                                         "[" + CheckDigits.class.getSimpleName() + "]、" +
                                         "[" + CheckEnum.class.getSimpleName() + "]、" +
@@ -264,17 +265,8 @@ public class Validator {
                     for (Annotation fieldAnn : fieldAnns) {
                         Class<? extends Annotation> annClazz = fieldAnn.annotationType();
                         if (!annClazz.equals(CheckField.class)) {
-                            if (!annClazz.equals(CheckDigits.class)
-                                    && !annClazz.equals(CheckEnum.class)
-                                    && !annClazz.equals(CheckLength.class)
-                                    && !annClazz.equals(CheckMax.class)
-                                    && !annClazz.equals(CheckMin.class)
-                                    && !annClazz.equals(CheckNotBlank.class)
-                                    && !annClazz.equals(CheckNotEmpty.class)
-                                    && !annClazz.equals(CheckNotNull.class)
-                                    && !annClazz.equals(CheckNull.class)
-                                    && !annClazz.equals(CheckPattern.class)
-                                    && !annClazz.equals(CheckSqlUniqe.class)) {
+                            if (annClazz.equals(CheckAssertFalse.class)
+                                    || annClazz.equals(CheckAssertTrue.class)) {
                                 throw new IllegalArgumentException("类名：[" + className + "], 属性：[" + fieldName + "]不能使用[" + fieldAnn.annotationType().getSimpleName() + "]注解!只可使用" +
                                         "[" + CheckDigits.class.getSimpleName() + "]、" +
                                         "[" + CheckEnum.class.getSimpleName() + "]、" +
@@ -295,8 +287,17 @@ public class Validator {
                     for (Annotation fieldAnn : fieldAnns) {
                         Class<? extends Annotation> annClazz = fieldAnn.annotationType();
                         if (!annClazz.equals(CheckField.class)) {
-                            if (!annClazz.equals(CheckNotNull.class)
-                                    && !annClazz.equals(CheckNull.class)) {
+                            if (annClazz.equals(CheckAssertFalse.class)
+                                    || annClazz.equals(CheckAssertTrue.class)
+                                    || annClazz.equals(CheckDigits.class)
+                                    || annClazz.equals(CheckEnum.class)
+                                    || annClazz.equals(CheckLength.class)
+                                    || annClazz.equals(CheckMax.class)
+                                    || annClazz.equals(CheckMin.class)
+                                    || annClazz.equals(CheckNotBlank.class)
+                                    || annClazz.equals(CheckNotEmpty.class)
+                                    || annClazz.equals(CheckPattern.class)
+                                    || annClazz.equals(CheckSqlUniqe.class)) {
                                 throw new IllegalArgumentException("类名：[" + className + "], 属性：[" + fieldName + "]不能使用[" + fieldAnn.annotationType().getSimpleName() + "]注解!只可使用" +
                                         "[" + CheckNotNull.class.getSimpleName() + "]、" +
                                         "[" + CheckNull.class.getSimpleName() + "]等注解。");
@@ -308,11 +309,14 @@ public class Validator {
                     for (Annotation fieldAnn : fieldAnns) {
                         Class<? extends Annotation> annClazz = fieldAnn.annotationType();
                         if (!annClazz.equals(CheckField.class)) {
-                            if (!annClazz.equals(CheckDigits.class)
-                                    && !annClazz.equals(CheckMax.class)
-                                    && !annClazz.equals(CheckMin.class)
-                                    && !annClazz.equals(CheckNotNull.class)
-                                    && !annClazz.equals(CheckNull.class)) {
+                            if (annClazz.equals(CheckAssertFalse.class)
+                                    || annClazz.equals(CheckAssertTrue.class)
+                                    || annClazz.equals(CheckEnum.class)
+                                    || annClazz.equals(CheckLength.class)
+                                    || annClazz.equals(CheckNotBlank.class)
+                                    || annClazz.equals(CheckNotEmpty.class)
+                                    || annClazz.equals(CheckPattern.class)
+                                    || annClazz.equals(CheckSqlUniqe.class)) {
                                 throw new IllegalArgumentException("类名：[" + className + "], 属性：[" + fieldName + "]不能使用[" + fieldAnn.annotationType().getSimpleName() + "]注解!只可使用" +
                                         "[" + CheckDigits.class.getSimpleName() + "]、" +
                                         "[" + CheckMax.class.getSimpleName() + "]、" +
@@ -327,9 +331,16 @@ public class Validator {
                     for (Annotation fieldAnn : fieldAnns) {
                         Class<? extends Annotation> annClazz = fieldAnn.annotationType();
                         if (!annClazz.equals(CheckField.class)) {
-                            if (!annClazz.equals(CheckNotEmpty.class)
-                                    && !annClazz.equals(CheckNotNull.class)
-                                    && !annClazz.equals(CheckNull.class)) {
+                            if (annClazz.equals(CheckAssertFalse.class)
+                                    || annClazz.equals(CheckAssertTrue.class)
+                                    || annClazz.equals(CheckDigits.class)
+                                    || annClazz.equals(CheckEnum.class)
+                                    || annClazz.equals(CheckLength.class)
+                                    || annClazz.equals(CheckMax.class)
+                                    || annClazz.equals(CheckMin.class)
+                                    || annClazz.equals(CheckNotBlank.class)
+                                    || annClazz.equals(CheckPattern.class)
+                                    || annClazz.equals(CheckSqlUniqe.class)) {
                                 throw new IllegalArgumentException("类名：[" + className + "], 属性：[" + fieldName + "]不能使用[" + fieldAnn.annotationType().getSimpleName() + "]注解!只可使用" +
                                         "[" + CheckNotEmpty.class.getSimpleName() + "]、" +
                                         "[" + CheckNotNull.class.getSimpleName() + "]、" +
@@ -342,10 +353,15 @@ public class Validator {
                     for (Annotation fieldAnn : fieldAnns) {
                         Class<? extends Annotation> annClazz = fieldAnn.annotationType();
                         if (!annClazz.equals(CheckField.class)) {
-                            if (!annClazz.equals(CheckAssertFalse.class)
-                                    && !annClazz.equals(CheckAssertTrue.class)
-                                    && !annClazz.equals(CheckNotNull.class)
-                                    && !annClazz.equals(CheckNull.class)) {
+                            if (annClazz.equals(CheckDigits.class)
+                                    || annClazz.equals(CheckEnum.class)
+                                    || annClazz.equals(CheckLength.class)
+                                    || annClazz.equals(CheckMax.class)
+                                    || annClazz.equals(CheckMin.class)
+                                    || annClazz.equals(CheckNotBlank.class)
+                                    || annClazz.equals(CheckNotEmpty.class)
+                                    || annClazz.equals(CheckPattern.class)
+                                    || annClazz.equals(CheckSqlUniqe.class)) {
                                 throw new IllegalArgumentException("类名：[" + className + "], 属性：[" + fieldName + "]不能使用[" + fieldAnn.annotationType().getSimpleName() + "]注解!只可使用" +
                                         "[" + CheckAssertFalse.class.getSimpleName() + "]、" +
                                         "[" + CheckAssertTrue.class.getSimpleName() + "]、" +
@@ -359,8 +375,17 @@ public class Validator {
                     for (Annotation fieldAnn : fieldAnns) {
                         Class<? extends Annotation> annClazz = fieldAnn.annotationType();
                         if (!annClazz.equals(CheckField.class)) {
-                            if (!annClazz.equals(CheckNotNull.class)
-                                    && !annClazz.equals(CheckNull.class)) {
+                            if (annClazz.equals(CheckAssertFalse.class)
+                                    || annClazz.equals(CheckAssertTrue.class)
+                                    || annClazz.equals(CheckDigits.class)
+                                    || annClazz.equals(CheckEnum.class)
+                                    || annClazz.equals(CheckLength.class)
+                                    || annClazz.equals(CheckMax.class)
+                                    || annClazz.equals(CheckMin.class)
+                                    || annClazz.equals(CheckNotBlank.class)
+                                    || annClazz.equals(CheckNotEmpty.class)
+                                    || annClazz.equals(CheckPattern.class)
+                                    || annClazz.equals(CheckSqlUniqe.class)) {
                                 throw new IllegalArgumentException("类名：[" + className + "], 属性：[" + fieldName + "]不能使用[" + fieldAnn.annotationType().getSimpleName() + "]注解!只可使用" +
                                         "[" + CheckNotNull.class.getSimpleName() + "]、" +
                                         "[" + CheckNull.class.getSimpleName() + "]等注解。");
