@@ -49,13 +49,13 @@ public class Validator {
         MethodSignature msig = (MethodSignature) pjp.getSignature();
         Method method = target.getClass().getMethod(msig.getName(), msig.getParameterTypes());
         Annotation[][] parameterAnnotations = method.getParameterAnnotations();
+        Annotation[] parameterAnnotation = parameterAnnotations[0];
         try {
             // 遍历该方法的所有参数
-            if (args != null && args.length == 1) {
+            if (args != null && args.length == 1 && parameterAnnotation != null && parameterAnnotation.length > 0) {
                 for (Object arg : args) {
                     // 获取参数类型
                     Class<?> argClazz = arg.getClass();
-                    Annotation[] parameterAnnotation = parameterAnnotations[0];
                     List<Annotation> annotations = Arrays.asList(parameterAnnotation);
                     EnableCheck enableCheckAnno = null;
                     for (Annotation annotation : annotations) {
