@@ -480,10 +480,10 @@ public class Validator {
             String message = checkNotEmptyAnno.message();
             String[] groups = checkNotEmptyAnno.groups();
             if (effectGroup(effectGroup, groups)) {
-                if (fieldObj == null || fieldObj.toString().length() == 0) {
-                    throw new IllegalArgumentException("类名：[" + className + "], 属性：[" + fieldName + "]的值是空!");
-                }
                 try {
+                    if (fieldObj == null || fieldObj.toString().length() == 0) {
+                        throw new IllegalArgumentException("类名：[" + className + "], 属性：[" + fieldName + "]的值是空!");
+                    }
                     // 字符串判断
                     if (fieldType.equals(SystemTypeEnum.STRING.getType()) && StringUtils.isEmpty(String.valueOf(fieldObj))) {
                         throw new IllegalArgumentException("类名：[" + className + "], 属性：[" + fieldName + "]的值是空!");
@@ -620,14 +620,14 @@ public class Validator {
             String[] groups = checkPatternAnno.groups();
             String mode = checkPatternAnno.mode();
             if (effectGroup(effectGroup, groups)) {
-                if (!"matches".equals(mode) && !"find".equals(mode)) {
-                    throw new IllegalArgumentException("类名：[" + className + "], 属性：[" + fieldName + "]的正则校验注解CheckPattern的mode属性只可设置为find或matches!");
-                }
                 // 正则
                 String regexp = checkPatternAnno.regexp();
                 String source = "";
                 Pattern p = Pattern.compile(regexp);
                 try {
+                    if (!"matches".equals(mode) && !"find".equals(mode)) {
+                        throw new IllegalArgumentException("类名：[" + className + "], 属性：[" + fieldName + "]的正则校验注解CheckPattern的mode属性只可设置为find或matches!");
+                    }
                     if (fieldType.equals(SystemTypeEnum.STRING.getType())) {
                         source = String.valueOf(fieldObj);
                     } else if (fieldType.equals(SystemTypeEnum.STRINGBUFFER.getType())) {
