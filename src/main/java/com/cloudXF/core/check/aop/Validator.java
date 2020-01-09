@@ -50,13 +50,17 @@ public class Validator {
         Method method = target.getClass().getMethod(msig.getName(), msig.getParameterTypes());
         Annotation[][] parameterAnnotations = method.getParameterAnnotations();
         try {
-            // 遍历该方法的所有参数
+            // 只有一个参数的接口才可使用系统注解校验
             if (args != null && args.length == 1) {
+                // 循环唯一的参数
                 for (Object arg : args) {
                     // 获取参数类型
                     Class<?> argClazz = arg.getClass();
+                    // 获取参数的所有注解
                     Annotation[] parameterAnnotation = parameterAnnotations[0];
+                    // 该参数有注解才进行后续判断，如果没有注解则直接执行
                     if (parameterAnnotation != null && parameterAnnotation.length > 0) {
+                        // 判断该参数是否含有@EnableCheck注解
                         List<Annotation> annotations = Arrays.asList(parameterAnnotation);
                         EnableCheck enableCheckAnno = null;
                         for (Annotation annotation : annotations) {
@@ -64,7 +68,9 @@ public class Validator {
                                 enableCheckAnno = (EnableCheck) annotation;
                             }
                         }
+                        // 存在@EnableCheck注解，执行系统校验
                         if (enableCheckAnno != null) {
+                            // 获取校验有效分组
                             String[] effectGroup = enableCheckAnno.effectGroup();
                             // 获取参数所有属性
                             List<Param> paramList = new ArrayList<Param>();
@@ -73,7 +79,7 @@ public class Validator {
                             } catch (Exception e) {
                                 throw new RuntimeException("注解校验获取属性失败！！");
                             }
-
+                            // 对获取的属性集合进行排序
                             if (paramList != null && paramList.size() > 0) {
                                 // 校验顺序排序
                                 Collections.sort(paramList, new Comparator<Param>() {
@@ -147,6 +153,7 @@ public class Validator {
             for (Field declaredField : declaredFieldList) {
                 declaredField.setAccessible(true);
                 CheckField checkFieldAnno = declaredField.getAnnotation(CheckField.class);
+                // 没有@CheckField注解的属性不做校验
                 if (checkFieldAnno == null) {
                     continue;
                 }
@@ -164,7 +171,6 @@ public class Validator {
                         //得到泛型里的class类型对象
                         Class<?> genericClazz = (Class<?>) pt.getActualTypeArguments()[0];
                         if (obj == null || declaredField.get(obj) == null) {
-//                            getAllFileds(paramList, genericClazz, null);
                             paramList.add(new Param(argClazz.getSimpleName(), declaredField.getName(), sort, declaredField, null));
                         } else {
                             Class<?> tempClazz = declaredField.get(obj).getClass();
@@ -221,7 +227,7 @@ public class Validator {
     }
 
     /**
-     * 校验属性属性使用注解的正确性
+     * 校验属性使用注解的正确性
      *
      * @param className 类名称
      * @param fieldName 属性名称
