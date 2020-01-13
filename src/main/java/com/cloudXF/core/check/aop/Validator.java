@@ -663,7 +663,7 @@ public class Validator {
                     Matcher m = p.matcher(source);
                     if (!m.matches() && "matches".equals(mode)) {
                         throw new IllegalArgumentException("类名：[" + className + "], 属性：[" + fieldName + "]的正则校验不匹配!");
-                    } else if (!m.find() && "find".equals(mode)) {
+                    } else if (m.find() && "find".equals(mode)) {
                         throw new IllegalArgumentException("类名：[" + className + "], 属性：[" + fieldName + "]的正则校验未找到!");
                     }
                 } catch (Exception e) {
