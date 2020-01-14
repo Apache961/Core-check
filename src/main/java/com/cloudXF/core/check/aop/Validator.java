@@ -335,7 +335,6 @@ public class Validator {
                                     || annClazz.equals(CheckAssertTrue.class)
                                     || annClazz.equals(CheckDigits.class)
                                     || annClazz.equals(CheckEnum.class)
-                                    || annClazz.equals(CheckLength.class)
                                     || annClazz.equals(CheckMax.class)
                                     || annClazz.equals(CheckMin.class)
                                     || annClazz.equals(CheckNotBlank.class)
@@ -344,6 +343,7 @@ public class Validator {
                                 throw new IllegalArgumentException("类名：[" + className + "], 属性：[" + fieldName + "]不能使用[" + fieldAnn.annotationType().getSimpleName() + "]注解!只可使用" +
                                         "[" + CheckNotEmpty.class.getSimpleName() + "]、" +
                                         "[" + CheckNotNull.class.getSimpleName() + "]、" +
+                                        "[" + CheckLength.class.getSimpleName() + "]、" +
                                         "[" + CheckNull.class.getSimpleName() + "]等注解。");
                             }
                         }
@@ -536,9 +536,9 @@ public class Validator {
                     // map判断
                     if (fieldType.equals(SystemTypeEnum.MAP.getType()) && ((Map) fieldObj).size() == 0) {
                         throw new IllegalArgumentException("类名：[" + className + "], 属性：[" + fieldName + "]的长度是空!");
-                    } else if (fieldType.equals(SystemTypeEnum.HASHMAP.getType())) {
+                    } else if (fieldType.equals(SystemTypeEnum.HASHMAP.getType()) && ((Map) fieldObj).size() == 0) {
                         throw new IllegalArgumentException("类名：[" + className + "], 属性：[" + fieldName + "]的长度是空!");
-                    } else if (fieldType.equals(SystemTypeEnum.LINKEDHASHMAP.getType())) {
+                    } else if (fieldType.equals(SystemTypeEnum.LINKEDHASHMAP.getType()) && ((Map) fieldObj).size() == 0) {
                         throw new IllegalArgumentException("类名：[" + className + "], 属性：[" + fieldName + "]的长度是空!");
                     }
                 } catch (Exception e) {
@@ -611,18 +611,66 @@ public class Validator {
                 // 最大
                 int max = checkLengthAnno.max();
                 String source = "";
+                int size = 0;
+                int type = 0;
                 try {
+                    // 字符串判断
                     if (fieldType.equals(SystemTypeEnum.STRING.getType())) {
                         source = String.valueOf(fieldObj);
+                        type = 1;
                     } else if (fieldType.equals(SystemTypeEnum.STRINGBUFFER.getType())) {
                         source = String.valueOf(fieldObj);
+                        type = 1;
                     } else if (fieldType.equals(SystemTypeEnum.STRINGBUILDER.getType())) {
                         source = String.valueOf(fieldObj);
+                        type = 1;
                     }
-                    if (source.length() > max) {
+                    if (source.length() > max && type == 1) {
                         throw new IllegalArgumentException("类名：[" + className + "], 属性：[" + fieldName + "]的长度大于最大值[" + max + "]!");
                     }
-                    if (source.length() < min) {
+                    if (source.length() < min && type == 1) {
+                        throw new IllegalArgumentException("类名：[" + className + "], 属性：[" + fieldName + "]的长度小于最小值[" + min + "]!");
+                    }
+
+                    // Collection判断
+                    if (fieldType.equals(SystemTypeEnum.COLLECTION.getType())) {
+                        size = ((Collection) fieldObj).size();
+                        type = 2;
+                    } else if (fieldType.equals(SystemTypeEnum.LIST.getType())) {
+                        size = ((Collection) fieldObj).size();
+                        type = 2;
+                    } else if (fieldType.equals(SystemTypeEnum.SET.getType())) {
+                        size = ((Collection) fieldObj).size();
+                        type = 2;
+                    } else if (fieldType.equals(SystemTypeEnum.ARRAYLIST.getType())) {
+                        size = ((Collection) fieldObj).size();
+                        type = 2;
+                    } else if (fieldType.equals(SystemTypeEnum.LINKEDLIST.getType())) {
+                        size = ((Collection) fieldObj).size();
+                        type = 2;
+                    } else if (fieldType.equals(SystemTypeEnum.HASHSET.getType())) {
+                        size = ((Collection) fieldObj).size();
+                        type = 2;
+                    } else if (fieldType.equals(SystemTypeEnum.LINKEDHASHSET.getType())) {
+                        size = ((Collection) fieldObj).size();
+                        type = 2;
+                    }
+                    // map判断
+                    if (fieldType.equals(SystemTypeEnum.MAP.getType())) {
+                        size = ((Map) fieldObj).size();
+                        type = 2;
+                    } else if (fieldType.equals(SystemTypeEnum.HASHMAP.getType())) {
+                        size = ((Map) fieldObj).size();
+                        type = 2;
+                    } else if (fieldType.equals(SystemTypeEnum.LINKEDHASHMAP.getType())) {
+                        size = ((Map) fieldObj).size();
+                        type = 2;
+                    }
+
+                    if (size > max && type == 2) {
+                        throw new IllegalArgumentException("类名：[" + className + "], 属性：[" + fieldName + "]的长度大于最大值[" + max + "]!");
+                    }
+                    if (size < min && type == 2) {
                         throw new IllegalArgumentException("类名：[" + className + "], 属性：[" + fieldName + "]的长度小于最小值[" + min + "]!");
                     }
                 } catch (Exception e) {
