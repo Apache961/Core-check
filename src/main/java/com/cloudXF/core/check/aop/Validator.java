@@ -4,6 +4,7 @@ import com.cloudXF.core.check.annotation.*;
 import com.cloudXF.core.check.bean.Param;
 import com.cloudXF.core.check.enumd.SystemTypeEnum;
 import org.apache.commons.lang3.StringUtils;
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -45,7 +46,7 @@ public class Validator {
     private DataSource dataSource;
 
     @Before("execution(public * com.cloudXF..controller..*(..))")
-    public void validate(ProceedingJoinPoint pjp) throws NoSuchMethodException {
+    public void validate(JoinPoint pjp) throws NoSuchMethodException {
         // 获取被拦截的方法的参数
         Object[] args = pjp.getArgs();
         Object target = pjp.getTarget();
