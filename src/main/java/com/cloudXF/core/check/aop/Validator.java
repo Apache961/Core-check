@@ -2,13 +2,14 @@ package com.cloudXF.core.check.aop;
 
 import com.cloudXF.core.check.annotation.*;
 import com.cloudXF.core.check.bean.Param;
-import com.cloudXF.core.check.bean.Result;
 import com.cloudXF.core.check.enumd.SystemTypeEnum;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -38,11 +39,13 @@ import java.util.regex.Pattern;
 @Component
 public class Validator {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(Validator.class);
+
     @Resource
     private DataSource dataSource;
 
-    @Around("execution(public * com.cloudXF..controller..*(..))")
-    public Object validate(ProceedingJoinPoint pjp) throws NoSuchMethodException {
+    @Before("execution(public * com.cloudXF..controller..*(..))")
+    public void validate(ProceedingJoinPoint pjp) throws NoSuchMethodException {
         // 获取被拦截的方法的参数
         Object[] args = pjp.getArgs();
         Object target = pjp.getTarget();
@@ -117,11 +120,12 @@ public class Validator {
                     }
                 }
             }
-            Object result = pjp.proceed();
-            return result;
+//            Object result = pjp.proceed();
+//            return result;
         } catch (Throwable throwable) {
-            throwable.printStackTrace();
-            return new Result().setStatus("fail").setErrcode(1).setMessage(throwable.getMessage());
+            LOGGER.error("注解校验异常", throwable);
+            throw new RuntimeException("注解校验异常", throwable);
+//            return new Result().setStatus("fail").setErrcode(1).setMessage(throwable.getMessage());
         }
     }
 
