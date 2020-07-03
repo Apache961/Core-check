@@ -125,7 +125,7 @@ public class Validator {
 //            return result;
         } catch (Throwable throwable) {
             LOGGER.error("注解校验异常", throwable);
-            throw new RuntimeException("注解校验异常", throwable);
+            throw new RuntimeException(throwable.getMessage());
 //            return new Result().setStatus("fail").setErrcode(1).setMessage(throwable.getMessage());
         }
     }
